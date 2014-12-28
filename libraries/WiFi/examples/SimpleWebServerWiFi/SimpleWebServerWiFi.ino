@@ -87,9 +87,8 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
-            client.print("Click <a href=\"/H\">here</a> turn the LED on pin 9 on<br>");
-            client.print("Click <a href=\"/L\">here</a> turn the LED on pin 9 off<br>");
-
+            client.print("<html> <head> <title>Page Title</title> <style type='text/css'> td{ font-size: 80px !important; color: grey; } </style> </head> <body> <table> <tr> <td></td> <td class='forward'>&#8593;</td> <td></td> </tr> <tr> <td class='left'>&#8592;</td> <td></td> <td class='right'>&#8594;</td> </tr> <tr> <td></td> <td class='back'>&#8595;</td> <td></td> </tr> </table> <!-- js --> <script src='http://code.jquery.com/jquery-1.11.2.min.js' type='text/javascript'></script> <script type='text/javascript'> document.onkeydown = checkKey; function checkKey(e) { e = e || window.event; if (e.keyCode == '13') { get('stop'); } else if (e.keyCode == '32') { get('beep'); } else if (e.keyCode == '38') { get('forward'); } else if (e.keyCode == '40') { get('back'); } else if (e.keyCode == '37') { get('left'); } else if (e.keyCode == '39') { get('right'); } } function get(direction){ $.get( direction ); $('td').css('color','grey'); $('.' + direction).css('color','black'); } </script> </body> </html>");
+            
             // The HTTP response ends with another blank line:
             client.println();
             // break out of the while loop:
