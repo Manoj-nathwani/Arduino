@@ -32,7 +32,12 @@ WiFiServer server(80);
 
 void setup() {
   Serial.begin(9600);      // initialize serial communication
-  pinMode(9, OUTPUT);      // set the LED pin mode
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(10, OUTPUT); // beep (horn for car)
+  pinMode(13, OUTPUT); // led to confirm the webserve is up
 
   // check for the presence of the shield:
   if (WiFi.status() == WL_NO_SHIELD) {
@@ -60,6 +65,7 @@ void setup() {
 
 
 void loop() {
+  digitalWrite(13, HIGH); 
   WiFiClient client = server.available();   // listen for incoming clients
 
   if (client) {                             // if you get a client,
@@ -97,13 +103,48 @@ void loop() {
           currentLine += c;      // add it to the end of the currentLine
         }
 
-        // Check to see if the client request was "GET /H" or "GET /L":
-        if (currentLine.endsWith("GET /H")) {
-          digitalWrite(9, HIGH);               // GET /H turns the LED on
+        if (currentLine.endsWith("GET /forward")) {
+          digitalWrite(4, LOW);
+          digitalWrite(5, HIGH);
+          digitalWrite(6, LOW);
+          digitalWrite(7, HIGH);
         }
-        if (currentLine.endsWith("GET /L")) {
-          digitalWrite(9, LOW);                // GET /L turns the LED off
+        
+        if (currentLine.endsWith("GET /back")) {
+          digitalWrite(4, HIGH);
+          digitalWrite(5, LOW);
+          digitalWrite(6, HIGH);
+          digitalWrite(7, LOW);
         }
+        
+        if (currentLine.endsWith("GET /left")) {
+          digitalWrite(4, LOW);
+          digitalWrite(5, HIGH);
+          digitalWrite(6, LOW);
+          digitalWrite(7, LOW);
+        }
+        
+        if (currentLine.endsWith("GET /right")) {
+          digitalWrite(4, LOW);
+          digitalWrite(5, LOW);
+          digitalWrite(6, LOW);
+          digitalWrite(7, HIGH);
+        }
+        
+        if (currentLine.endsWith("GET /stop")) {
+          digitalWrite(4, LOW);
+          digitalWrite(5, LOW);
+          digitalWrite(6, LOW);
+          digitalWrite(7, LOW);
+        }
+        
+        if (currentLine.endsWith("GET /beep")) {
+          digitalWrite(10, HIGH);
+          delay(100);
+          digitalWrite(10, LOW);
+        }
+        
+        
       }
     }
     // close the connection:
